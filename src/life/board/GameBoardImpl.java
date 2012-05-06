@@ -3,20 +3,22 @@ package life.board;
 public class GameBoardImpl implements GameBoard {
 
 	private int[][] board;
+	private int width;
+	private int height;
 
-	public GameBoardImpl(int row, int col) {
-		board = new int[row][col];
+	public GameBoardImpl(int numRow, int numCol) {
+		this.height = numRow;
+		this.width = numCol;
+		this.board = new int[height][width];
+
 	}
 
 	// used for testing
-	protected GameBoardImpl() {
-		int[][] testboard = { 
-				{ 1, 0, 0, 0, 1 },
-				{ 0, 1, 0, 0, 0 },
-				{ 1, 1, 0, 0, 1 },
-				{ 1, 0, 0, 1, 1 },
-				{ 0, 1, 0, 0, 0 }};
-		board = testboard;
+	protected GameBoardImpl(int[][] testBoard, int numRow, int numCol) {
+		this.board = testBoard;
+		this.height = numRow;
+		this.width = numCol;
+
 	}
 
 	private void intiBoard() {
@@ -26,60 +28,82 @@ public class GameBoardImpl implements GameBoard {
 	@Override
 	public Integer getLiveNeighbors(int row, int col) {
 		int neighbors = 0;
-		int nRight = lookRight(row, col);
-		int nLeft = lookLeft(row, col);
-		int nUp = lookUp(row, col);
-		int nDown = lookDown(row, col);
-		int nUpRight = lookUpRight(row, col);
-		int nDownRight = lookDownRight(row, col);
-		int nUpLeft = lookUpLeft(row, col);
-		int nDownLeft = lookDownLeft(row, col);
-		
-		neighbors = nRight + nLeft + nUp + nDown + nUpRight + nDownRight + nUpLeft + nDownLeft;
+
+		if (validRow(row) && validCol(col)) {
+			neighbors += lookRight(row, col);
+			neighbors += lookLeft(row, col);
+			neighbors += lookUp(row, col);
+			neighbors += lookDown(row, col);
+			neighbors += lookUpRight(row, col);
+			neighbors += lookDownRight(row, col);
+			neighbors += lookUpLeft(row, col);
+			neighbors += lookDownLeft(row, col);
+		}
+
 		return neighbors;
 	}
 
 	private int lookRight(int row, int col) {
-		int newCol = col + 1;
-		return board[row][newCol];
+		return getNeighbor(row, col + 1);
 	}
 
 	private int lookLeft(int row, int col) {
-		int newCol = col - 1;
-		return board[row][newCol];
+		return getNeighbor(row, col - 1);
 	}
 
 	private int lookUp(int row, int col) {
-		int newRow = row + 1;
-		return board[newRow][col];
+		return getNeighbor(row + 1, col);
 	}
 
 	private int lookDown(int row, int col) {
-		int newRow = row - 1;
-		return board[newRow][col];
+		return getNeighbor(row - 1, col);
 	}
 
 	private int lookUpRight(int row, int col) {
-		int newRow = row + 1;
-		int newCol = col + 1;
-		return board[newRow][newCol];
+		return getNeighbor(row + 1, col + 1);
 	}
 
 	private int lookDownRight(int row, int col) {
-		int newRow = row - 1;
-		int newCol = col + 1;
-		return board[newRow][newCol];
+		return getNeighbor(row - 1, col + 1);
 	}
 
 	private int lookUpLeft(int row, int col) {
-		int newRow = row + 1;
-		int newCol = col - 1;
-		return board[newRow][newCol];
+		return getNeighbor(row + 1, col - 1);
 	}
 
 	private int lookDownLeft(int row, int col) {
-		int newRow = row - 1;
-		int newCol = col - 1;
-		return board[newRow][newCol];
+		return getNeighbor(row - 1, col - 1);
+	}
+
+	private int getCell(int row, int col) {
+		return board[row][col];
+	}
+
+	private Boolean validRow(int row) {
+		Boolean valid = false;
+		if (row >= 0 && row < this.height)
+			valid = true;
+
+		return valid;
+	}
+
+	private Boolean validCol(int col) {
+		Boolean valid = false;
+		if (col >= 0 && col < this.width)
+			valid = true;
+
+		return valid;
+	}
+
+	private Boolean validCell(int row, int col)
+	{
+		return validRow(row) && validCol(col);
+	}
+	
+	private int getNeighbor(int row, int col) {
+		int neighbor = 0;
+		if (validCell(row, col))
+			neighbor = getCell(row, col);
+		return neighbor;
 	}
 }
