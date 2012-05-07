@@ -1,5 +1,12 @@
 package life.board;
 
+/**
+ * This class in responsible for all the behavior of the game board for the
+ * "Game of Life."
+ * 
+ * @author Katy Groves
+ * 
+ */
 public class GameBoardImpl implements GameBoard {
 
 	private int[][] initBoard;
@@ -10,30 +17,35 @@ public class GameBoardImpl implements GameBoard {
 	private final Integer alive = 1;
 	private final Integer dead = 0;
 
+	// default constructor
 	public GameBoardImpl(int numRow, int numCol) {
-		this.height = numRow;
-		this.width = numCol;
-		this.numCells = this.height * this.width;
+		this(null, numRow, numCol);
 
-		this.initBoard = new int[this.height][this.width];
 	}
 
 	// used for testing
 	protected GameBoardImpl(int[][] testBoard, int numRow, int numCol) {
-		this.initBoard = testBoard;
 		this.height = numRow;
 		this.width = numCol;
 		this.numCells = this.height * this.width;
+		
+		if (testBoard != null) {
+			this.initBoard = testBoard;
+		} else {
+			this.initBoard = new int[this.height][this.width];
+		}
 	}
 
 	public void setBoard(String data) throws Exception {
 
+		// Validate input before populating board
 		if (validInitData(data)) {
 			char[] dataArray = data.toCharArray();
 			int counter = 0;
-			int col;
+			
+			//loop through board setting values
 			for (int row = 0; row < this.height; row++) {
-				for (col = 0; col < this.width; col++) {
+				for (int col = 0; col < this.width; col++) {
 					String value = String.valueOf(dataArray[counter]);
 					setCell(row, col, Integer.valueOf(value), this.initBoard);
 					counter++;
@@ -43,47 +55,69 @@ public class GameBoardImpl implements GameBoard {
 	}
 
 	public GameBoard getNextGeneration() {
+		// initialize next generation board
 		this.nextGen = new int[this.height][this.width];
-		
+
+		//loop through current board applying game rules
 		for (int row = 0; row < this.height; row++) {
 			for (int col = 0; col < this.width; col++) {
+				// Get the number of live neighbors
 				Integer numLiveNeighbors = getLiveNeighbors(row, col);
-				Integer cell = getCell(row, col);
-				if (cell.equals(this.alive)) {
-					if (numLiveNeighbors < 2)
-						setCell(row, col, this.dead, this.nextGen);
-					if (numLiveNeighbors.equals(2))
-						setCell(row, col, this.alive, this.nextGen);
-					if (numLiveNeighbors.equals(3))
-						setCell(row, col, this.alive, this.nextGen);
-				}
-				if (cell.equals(this.dead)) {
-					if (numLiveNeighbors.equals(3))
-						setCell(row, col, this.alive, this.nextGen);
-				}
+				
+				// Get the current cell
+				Integer cell = getCell(row, col, this.initBoard);
+				
+				// Get the next generation value by applying the rules
+				int nextGenCell = applyRules(cell, numLiveNeighbors);
+				
+				// Set the cell in the next Generation board
+				setCell(row, col, nextGenCell, this.nextGen);
+				
 			}
 		}
+		// returns a new gameboard of the next Generation 
 		return new GameBoardImpl(this.nextGen, this.height, this.width);
 	}
-	
-	public String printGameBoard()
-	{
+
+	public String printGameBoard() {
 		StringBuilder builder = new StringBuilder();
 		for (int row = 0; row < this.height; row++) {
 			for (int col = 0; col < this.width; col++) {
-				builder.append(String.valueOf(getCell(row, col)));
+				builder.append(String.valueOf(getCell(row, col, this.initBoard)));
 			}
 			builder.append("\n");
 		}
 
 		return builder.toString();
 	}
+
+	// This method applies the rules to the cell and returns the next generation
+	private  int applyRules(Integer cell, Integer numLiveNeighbors)
+	{
+		int result = this.dead;
+		if (cell.equals(this.alive)) {
+			if (numLiveNeighbors < 2)
+				result = this.dead;
+			if (numLiveNeighbors.equals(2))
+				result = this.alive;
+			if (numLiveNeighbors.equals(3))
+				result = this.alive;
+		}
+		if (cell.equals(this.dead)) {
+			if (numLiveNeighbors.equals(3))
+				result = this.alive;
+		}
+		return result;
+	}
+	
+	// Sets the value on the given board at the given location.
 	private void setCell(int row, int col, int value, int[][] board) {
 		board[row][col] = value;
 	}
 
-	private int getCell(int row, int col) {
-		return initBoard[row][col];
+	//
+	private int getCell(int row, int col, int[][]board) {
+		return board[row][col];
 	}
 
 	private Boolean validInitData(String data) throws Exception {
@@ -95,8 +129,7 @@ public class GameBoardImpl implements GameBoard {
 		}
 
 		// Test to make sure data only consists of 0s and 1s.
-		if(!data.matches("[0-1]+"))
-		{
+		if (!data.matches("[0-1]+")) {
 			throw new Exception("Input data must only consist of 1s and 0s");
 		}
 
@@ -152,6 +185,7 @@ public class GameBoardImpl implements GameBoard {
 		return getNeighbor(row - 1, col - 1);
 	}
 
+	//Returns true if row is valid for this board
 	private Boolean validRow(int row) {
 		Boolean valid = false;
 		if (row >= 0 && row < this.height)
@@ -160,6 +194,7 @@ public class GameBoardImpl implements GameBoard {
 		return valid;
 	}
 
+	//Returns true if col is valid for this board
 	private Boolean validCol(int col) {
 		Boolean valid = false;
 		if (col >= 0 && col < this.width)
@@ -168,24 +203,28 @@ public class GameBoardImpl implements GameBoard {
 		return valid;
 	}
 
+	//Is this a valid cell for the board
 	private Boolean validCell(int row, int col) {
 		return validRow(row) && validCol(col);
 	}
 
+	// Gets the cell value at the given row and col
 	private int getNeighbor(int row, int col) {
 		int neighbor = 0;
+		//Check to make sure this cell is on the board
 		if (validCell(row, col))
-			neighbor = getCell(row, col);
+			neighbor = getCell(row, col, this.initBoard);
 		return neighbor;
 	}
 
+	//This method has been overridden for testing purposes
 	@Override
 	public String toString() {
 
 		StringBuilder builder = new StringBuilder();
 		for (int row = 0; row < this.height; row++) {
 			for (int col = 0; col < this.width; col++) {
-				builder.append(String.valueOf(getCell(row, col)));
+				builder.append(String.valueOf(getCell(row, col, this.initBoard)));
 			}
 		}
 

@@ -1,7 +1,7 @@
 package life.board;
 
-import static org.junit.Assert.*;
-import life.controller.GameController;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -180,26 +180,4 @@ public class GameBoardTest {
 		}
 	}
 	
-	@Test
-	public void testRegex()
-	{
-		String data = "abcdefg100010010010100101";
-		String data1 = "10006666AAA0010010100101";
-		String data2 = "1000188810010100101";
-		String data3 = "1000110010100101";
-		Boolean test = data.matches("[0-1]+");
-		assertEquals(false, test);
-		
-		Boolean test1 = data1.matches("[0-1]+");
-		assertEquals(false, test1);
-		
-		Boolean test2 = data2.matches("[0-1]+");
-		assertEquals(false, test2);
-		
-		Boolean test3 = data3.matches("[0-1]+");
-		assertEquals(true, test3);
-		
-		
-
-	}
 }
