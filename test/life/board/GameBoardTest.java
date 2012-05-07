@@ -116,6 +116,19 @@ public class GameBoardTest {
 		}
 
 	}
+	
+	@Test
+	public void testInitBoardWithInvalidNumData() {
+		String data = "1234567890123456789012345";
+
+		try {
+			classUndTest.setBoard(data);
+			fail("should have caught exception");
+		} catch (Exception e) {
+			assertEquals("Input data must only consist of 1s and 0s", e.getMessage());
+		}
+
+	}
 
 	@Test
 	public void testGetNextGenNominalCase() {
@@ -171,7 +184,22 @@ public class GameBoardTest {
 	public void testRegex()
 	{
 		String data = "abcdefg100010010010100101";
-		Boolean test = data.matches("[0-1]*[a-zA-Z]+[0-1]*");
-		assertEquals(true, test);
+		String data1 = "10006666AAA0010010100101";
+		String data2 = "1000188810010100101";
+		String data3 = "1000110010100101";
+		Boolean test = data.matches("[0-1]+");
+		assertEquals(false, test);
+		
+		Boolean test1 = data1.matches("[0-1]+");
+		assertEquals(false, test1);
+		
+		Boolean test2 = data2.matches("[0-1]+");
+		assertEquals(false, test2);
+		
+		Boolean test3 = data3.matches("[0-1]+");
+		assertEquals(true, test3);
+		
+		
+
 	}
 }

@@ -94,12 +94,8 @@ public class GameBoardImpl implements GameBoard {
 					+ this.height + "x" + this.width);
 		}
 
-		// Test for alpha characters and 0 and 1
-		if(data.matches("[0-1]*[a-zA-Z]+[0-1]*"))
-		{
-			throw new Exception("Input data must only consist of 1s and 0s");
-		}
-		if(data.matches("[0-1]*[2-9]+[a-zA-Z]+[0-1]*"))
+		// Test to make sure data only consists of 0s and 1s.
+		if(!data.matches("[0-1]+"))
 		{
 			throw new Exception("Input data must only consist of 1s and 0s");
 		}
