@@ -138,7 +138,7 @@ public class GameBoardTest {
 
 	@Test
 	public void testInitBoardWithTooFewCells() {
-		String data = "12345678901234567890";
+		String data = "0000000011111";
 
 		try {
 			classUndTest.setBoard(data);
