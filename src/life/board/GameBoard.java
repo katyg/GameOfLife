@@ -17,9 +17,11 @@ public interface GameBoard {
 	public GameBoard getNextGeneration();
 	
 	/**
-	 * 
-	 * @return
+	 * Get the value of cell on the gameboard at the given location
+	 * @param row 
+	 * @param col
+	 * @return value of the cell
 	 */
-	public String printGameBoard();
+	public int getCell(int row, int col);
 	
 }

@@ -11,11 +11,11 @@ public class GameBoardImpl implements GameBoard {
 
 	private int[][] initBoard;
 	private int[][] nextGen;
-	private int width;
-	private int height;
-	private int numCells;
-	private final Integer alive = 1;
-	private final Integer dead = 0;
+	private final int width;
+	private final int height;
+	private final int numCells;
+	private static final Integer ALIVE = 1;
+	private static final Integer DEAD = 0;
 
 	// default constructor
 	public GameBoardImpl(int numRow, int numCol) {
@@ -79,33 +79,26 @@ public class GameBoardImpl implements GameBoard {
 		return new GameBoardImpl(this.nextGen, this.height, this.width);
 	}
 
-	public String printGameBoard() {
-		StringBuilder builder = new StringBuilder();
-		for (int row = 0; row < this.height; row++) {
-			for (int col = 0; col < this.width; col++) {
-				builder.append(String.valueOf(getCell(row, col, this.initBoard)));
-			}
-			builder.append("\n");
-		}
-
-		return builder.toString();
+	public int getCell(int row, int col)
+	{
+		return getCell(row, col, this.initBoard);
 	}
 
 	// This method applies the rules to the cell and returns the next generation
 	private  int applyRules(Integer cell, Integer numLiveNeighbors)
 	{
-		int result = this.dead;
-		if (cell.equals(this.alive)) {
+		int result = DEAD;
+		if (cell.equals(ALIVE)) {
 			if (numLiveNeighbors < 2)
-				result = this.dead;
+				result = DEAD;
 			if (numLiveNeighbors.equals(2))
-				result = this.alive;
+				result = ALIVE;
 			if (numLiveNeighbors.equals(3))
-				result = this.alive;
+				result = ALIVE;
 		}
-		if (cell.equals(this.dead)) {
+		if (cell.equals(DEAD)) {
 			if (numLiveNeighbors.equals(3))
-				result = this.alive;
+				result = ALIVE;
 		}
 		return result;
 	}
@@ -115,7 +108,7 @@ public class GameBoardImpl implements GameBoard {
 		board[row][col] = value;
 	}
 
-	//
+	// Gets the value on the given board at the given location
 	private int getCell(int row, int col, int[][]board) {
 		return board[row][col];
 	}

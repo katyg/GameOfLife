@@ -3,43 +3,38 @@ package life.controller;
 import java.io.Console;
 import java.io.PrintWriter;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
+import life.GameFactory;
 import life.board.GameBoard;
-import life.board.GameBoardImpl;
-import life.model.GameBoardModel;
-import life.view.GameBoardView;
-import life.view.GameView;
 
 /**
- * This Class drives the "Game of Life" game.  It is responsible for
+ * This Class controlls the "Game of Life" game.  It is responsible for
  * getting the game board from the user and then generating 
  * the next generation output board.
  * 
  * @author Katy Groves
  *
  */
-public class SimpleGameController {
+public class SimpleGameController implements GameController {
 
-	// Main function that run the game
-	public static void main(String[] args) {
+	private static final int DEFAULT_WIDTH = 5;
+	private static final int DEFAULT_HEIGHT = 5;
+	
+	@Override
+	public void playGame() {
 		Console con = System.console();
 		if (con == null) {
 			System.err.println("No console.");
 			System.exit(1);
 		}
 		PrintWriter writer = con.writer();
-
-		SimpleGameController controller = new SimpleGameController();
-		controller.playGame(con, writer);
+		
+		startGame(con, writer);
 		
 		writer.close();
-
-	} 
-
+		
+	}
 	//This method drives the game play
-	private void playGame(Console con, PrintWriter writer)
+	private void startGame(Console con, PrintWriter writer)
 	{
 		Boolean keepPlaying = true;
 		
@@ -89,7 +84,8 @@ public class SimpleGameController {
 		builder.append(row3);
 		builder.append(row4);
 		builder.append(row5);
-		GameBoard board = new GameBoardImpl(5, 5);
+		
+		GameBoard board = new GameFactory().getGameBoard(DEFAULT_HEIGHT, DEFAULT_WIDTH);
 
 		try {
 			board.setBoard(builder.toString());
@@ -105,7 +101,7 @@ public class SimpleGameController {
 	//print the resulting next generation
 	private void printNextGen(PrintWriter writer, GameBoard nextGen) {
 		writer.print("--- Next Generation ---\n");
-		writer.print(nextGen.printGameBoard());
+		writer.print(getGameBoardPrintString(nextGen));
 		writer.flush();
 	}
 
@@ -125,5 +121,18 @@ public class SimpleGameController {
 		}
 		
 		return playAgain;
+	}
+	
+	private String getGameBoardPrintString(GameBoard board)
+	{
+			StringBuilder builder = new StringBuilder();
+			for (int row = 0; row < DEFAULT_HEIGHT; row++) {
+				for (int col = 0; col < DEFAULT_WIDTH; col++) {
+					builder.append(String.valueOf(board.getCell(row, col)));
+				}
+				builder.append("\n");
+			}
+
+			return builder.toString();
 	}
 }

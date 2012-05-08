@@ -1,44 +1,40 @@
 <project name="GameOfLife" default="dist" basedir=".">
-    <description>
+	<description>
         Build file to build the game of life.
     </description>
-	
-  <!-- set global properties for this build -->
-  <property name="src" location="src"/>
-  <property name="classes" location="classes"/>
-  <property name="dist"  location="dist"/>
 
-  <target name="init">
-    <!-- Create the time stamp -->
-    <tstamp/>
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${classes}"/>
-  </target>
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="classes" location="classes" />
+	<property name="dist" location="dist" />
+	<property name="jar.name" value="GameOfLife.jar" />
+	<property name="main.class" value="life/GameDriver" />
 
-  <target name="compile" depends="init"
-        description="compile the source " >
-    <!-- Compile the java code from ${src} into ${classes} -->
-    <javac srcdir="${src}" destdir="${classes}"/>
-  </target>
+	<target name="init">
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${classes}" />
+	</target>
 
-  <target name="dist" depends="compile"
-        description="generate the distribution" >
-    <!-- Create the distribution directory -->
-    <mkdir dir="${dist}"/>
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${classes} -->
+		<javac srcdir="${src}" destdir="${classes}" />
+	</target>
 
-    <!-- Put everything in ${classes} into the MyProject-${DSTAMP}.jar file -->
-  	<jar destfile="${dist}/GameOfLife.jar"
-  	         basedir="${classes}" >
-  	      <manifest>
-  	        <attribute name="Main-Class" value="life/controller/GameController" />
-  	      </manifest>
-  	    </jar>
-  </target>
+	<target name="dist" depends="compile" description="generate the distribution">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist}" />
 
-  <target name="clean"
-        description="clean up" >
-    <!-- Delete the ${classes} and ${dist} directory trees -->
-    <delete dir="${classes}"/>
-    <delete dir="${dist}"/>
-  </target>
+		<!-- Put everything in ${classes} into the ${jar.name}.jar file -->
+		<jar destfile="${dist}/${jar.name}" basedir="${classes}">
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${classes} and ${dist} directory trees -->
+		<delete dir="${classes}" />
+		<delete dir="${dist}" />
+	</target>
 </project>
