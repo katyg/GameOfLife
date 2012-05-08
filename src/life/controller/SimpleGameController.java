@@ -3,8 +3,14 @@ package life.controller;
 import java.io.Console;
 import java.io.PrintWriter;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import life.board.GameBoard;
 import life.board.GameBoardImpl;
+import life.model.GameBoardModel;
+import life.view.GameBoardView;
+import life.view.GameView;
 
 /**
  * This Class drives the "Game of Life" game.  It is responsible for
@@ -14,7 +20,7 @@ import life.board.GameBoardImpl;
  * @author Katy Groves
  *
  */
-public class GameController {
+public class SimpleGameController {
 
 	// Main function that run the game
 	public static void main(String[] args) {
@@ -25,12 +31,12 @@ public class GameController {
 		}
 		PrintWriter writer = con.writer();
 
-		GameController controller = new GameController();
+		SimpleGameController controller = new SimpleGameController();
 		controller.playGame(con, writer);
 		
 		writer.close();
 
-	}
+	} 
 
 	//This method drives the game play
 	private void playGame(Console con, PrintWriter writer)
