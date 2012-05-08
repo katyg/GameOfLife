@@ -1,5 +1,10 @@
 package life.controller;
 
+/**
+ * This interface defines the methods for the Game controller.
+ * @author Katy Groves
+ *
+ */
 public interface GameController {
 
 	/**

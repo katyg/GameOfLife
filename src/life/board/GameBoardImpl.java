@@ -1,8 +1,9 @@
 package life.board;
 
 /**
- * This class in responsible for all the behavior of the game board for the
- * "Game of Life."
+ * This class is a model for the gameboard for the "Game of Life" 
+ * It is responsible for holding the board information and all the game play
+ * behavior such as calculating the next Generation base on a set of rules.
  * 
  * @author Katy Groves
  * 
@@ -23,7 +24,7 @@ public class GameBoardImpl implements GameBoard {
 
 	}
 
-	// used for testing
+	//  For internal use and testing
 	protected GameBoardImpl(int[][] testBoard, int numRow, int numCol) {
 		this.height = numRow;
 		this.width = numCol;

@@ -7,6 +7,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * This Class tests the GameBoard.
+ * @author Katy Groves
+ *
+ */
 public class GameBoardTest {
 
 	private GameBoardImpl classUndTest;
@@ -20,6 +25,7 @@ public class GameBoardTest {
 
 	@After
 	public void tearDown() throws Exception {
+		classUndTest = null;
 	}
 
 	@Test

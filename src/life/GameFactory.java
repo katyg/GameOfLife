@@ -8,7 +8,7 @@ import life.controller.SimpleGameController;
 /**
  * The purpose of this class is to serve up implementations of 
  * the various classes need for the game of life
- * @author Kate
+ * @author Katy Groves
  *
  */
 public class GameFactory {

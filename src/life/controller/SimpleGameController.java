@@ -7,7 +7,7 @@ import life.GameFactory;
 import life.board.GameBoard;
 
 /**
- * This Class controlls the "Game of Life" game.  It is responsible for
+ * This Class controls the "Game of Life" game.  It is responsible for
  * getting the game board from the user and then generating 
  * the next generation output board.
  * 
@@ -123,6 +123,7 @@ public class SimpleGameController implements GameController {
 		return playAgain;
 	}
 	
+	// Build a new String to print the given gameboard to the screen
 	private String getGameBoardPrintString(GameBoard board)
 	{
 			StringBuilder builder = new StringBuilder();
