@@ -16,18 +16,22 @@ import life.board.GameBoard;
  */
 public class SimpleGameController implements GameController {
 
+	//Default dimensions for the gameboard
 	private static final int DEFAULT_WIDTH = 5;
 	private static final int DEFAULT_HEIGHT = 5;
 	
 	@Override
 	public void playGame() {
+		
+		//Attempt to the get the system console
 		Console con = System.console();
 		if (con == null) {
 			System.err.println("No console.");
 			System.exit(1);
 		}
 		PrintWriter writer = con.writer();
-		
+	
+		// Start up the game user interface
 		startGame(con, writer);
 		
 		writer.close();
@@ -38,14 +42,25 @@ public class SimpleGameController implements GameController {
 	{
 		Boolean keepPlaying = true;
 		
+		// Display welcome and rules
 		printGameStartupMessage(writer);
+		
+		//If the user want to keep playing 
 		while (keepPlaying) {
+			
+			//Get the initial board from the user
 			GameBoard initialBoard = getBoard(writer, con);
 
+			//If the user entered a valid board
 			if (initialBoard != null) {
+				
+				//Get the next generation from the model
 				GameBoard nextGen = initialBoard.getNextGeneration();
+				
+				//Display the next generation to the user
 				printNextGen(writer, nextGen);
 			}
+			// Ask the user if you they want to play again
 			keepPlaying = askPlayAgain(con);
 		}
 
@@ -72,6 +87,7 @@ public class SimpleGameController implements GameController {
 		writer.print("Please enter your 5 x 5 game board: \n");
 		writer.flush();
 
+		//Get the board from the user
 		String row1 = con.readLine("Row1: ");
 		String row2 = con.readLine("Row2: ");
 		String row3 = con.readLine("Row3: ");
@@ -85,11 +101,14 @@ public class SimpleGameController implements GameController {
 		builder.append(row4);
 		builder.append(row5);
 		
+		//Create a new gameboard
 		GameBoard board = new GameFactory().getGameBoard(DEFAULT_HEIGHT, DEFAULT_WIDTH);
 
 		try {
+			//Attempt to set the data into the board  
 			board.setBoard(builder.toString());
 		} catch (Exception e) {
+			//if an exception is caught print error to the screen and set the board to null
 			writer.print(e.getMessage() + "\n");
 			writer.flush();
 			board = null;

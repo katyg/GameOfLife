@@ -137,6 +137,19 @@ public class GameBoardTest {
 	}
 
 	@Test
+	public void testInitBoardWithTooFewCells() {
+		String data = "12345678901234567890";
+
+		try {
+			classUndTest.setBoard(data);
+			fail("should have caught exception");
+		} catch (Exception e) {
+			assertEquals(true, e.getMessage().contains("Input data does not match board size of"));
+		}
+
+	}
+	
+	@Test
 	public void testGetNextGenNominalCase() {
 		String expected = "0000001000111111011100000";
 			GameBoard result = classUndTest.getNextGeneration();

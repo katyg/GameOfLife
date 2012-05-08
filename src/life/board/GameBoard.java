@@ -1,5 +1,11 @@
 package life.board;
 
+/**
+ * This interface defines the methods that make up a GameBoard
+ * for the "Game of Life"
+ * @author Katy Groves
+ *
+ */
 public interface GameBoard {
 	
 	/**
